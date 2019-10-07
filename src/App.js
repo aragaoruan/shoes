@@ -1,10 +1,13 @@
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import Routes from './router';
 
 function App() {
   return (
-    <div>
-      <h1>Olá mundo !</h1>
-    </div>
+    <BrowserRouter>
+      {/* <Header /> */}
+      <Routes />
+    </BrowserRouter>
   );
 }
 

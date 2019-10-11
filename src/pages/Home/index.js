@@ -1,102 +1,45 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { MdAddShoppingCart } from 'react-icons/md';
+import api from '../../services/api';
+import { formatPrice } from '../../util/format';
+import { ProductList } from './styles';
 
-import { Container } from './styles';
+export default class Home extends Component {
+  state = {
+    products: [],
+  };
 
-export default function Home() {
-  return (
-    <Container>
-      <li>
-        <img
-          src="https://static.netshoes.com.br/produtos/chuteira-campo-nike-mercurial-superfly-7-club-fg/58/HZM-1880-058/HZM-1880-058_detalhe2.jpg?ims=326x"
-          alt="Tenis"
-        />
-        <strong>Tenis muito legal</strong>
-        <span>R$129,90</span>
+  async componentDidMount() {
+    const { data } = await api.get('products');
 
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#FFF" /> 3
-          </div>
-          <span>ADICIONAR AO CARRINHO</span>
-        </button>
-      </li>
+    const products = data.map(product => ({
+      ...product,
+      priceFormatted: formatPrice(product.price),
+    }));
 
-      <li>
-        <img
-          src="https://static.netshoes.com.br/produtos/chuteira-campo-nike-mercurial-superfly-7-club-fg/58/HZM-1880-058/HZM-1880-058_detalhe2.jpg?ims=326x"
-          alt="Tenis"
-        />
-        <strong>Tenis muito legal</strong>
-        <span>R$129,90</span>
+    this.setState({ products });
+  }
 
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#FFF" /> 3
-          </div>
-          <span>ADICIONAR AO CARRINHO</span>
-        </button>
-      </li>
-      <li>
-        <img
-          src="https://static.netshoes.com.br/produtos/chuteira-campo-nike-mercurial-superfly-7-club-fg/58/HZM-1880-058/HZM-1880-058_detalhe2.jpg?ims=326x"
-          alt="Tenis"
-        />
-        <strong>Tenis muito legal</strong>
-        <span>R$129,90</span>
+  render() {
+    const { products } = this.state;
 
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#FFF" /> 3
-          </div>
-          <span>ADICIONAR AO CARRINHO</span>
-        </button>
-      </li>
-      <li>
-        <img
-          src="https://static.netshoes.com.br/produtos/chuteira-campo-nike-mercurial-superfly-7-club-fg/58/HZM-1880-058/HZM-1880-058_detalhe2.jpg?ims=326x"
-          alt="Tenis"
-        />
-        <strong>Tenis muito legal</strong>
-        <span>R$129,90</span>
+    return (
+      <ProductList>
+        {products.map(product => (
+          <li key={product.id}>
+            <img src={product.image} alt={product.title} />
+            <strong>{product.title}</strong>
+            <span>{product.priceFormatted}</span>
 
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#FFF" /> 3
-          </div>
-          <span>ADICIONAR AO CARRINHO</span>
-        </button>
-      </li>
-      <li>
-        <img
-          src="https://static.netshoes.com.br/produtos/chuteira-campo-nike-mercurial-superfly-7-club-fg/58/HZM-1880-058/HZM-1880-058_detalhe2.jpg?ims=326x"
-          alt="Tenis"
-        />
-        <strong>Tenis muito legal</strong>
-        <span>R$129,90</span>
-
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#FFF" /> 3
-          </div>
-          <span>ADICIONAR AO CARRINHO</span>
-        </button>
-      </li>
-      <li>
-        <img
-          src="https://static.netshoes.com.br/produtos/chuteira-campo-nike-mercurial-superfly-7-club-fg/58/HZM-1880-058/HZM-1880-058_detalhe2.jpg?ims=326x"
-          alt="Tenis"
-        />
-        <strong>Tenis muito legal</strong>
-        <span>R$129,90</span>
-
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#FFF" /> 3
-          </div>
-          <span>ADICIONAR AO CARRINHO</span>
-        </button>
-      </li>
-    </Container>
-  );
+            <button type="button">
+              <div>
+                <MdAddShoppingCart size={16} color="#FFF" /> 3
+              </div>
+              <span>ADICIONAR AO CARRINHO</span>
+            </button>
+          </li>
+        ))}
+      </ProductList>
+    );
+  }
 }
